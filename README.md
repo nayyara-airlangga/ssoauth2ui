@@ -2,6 +2,6 @@
 
 ![CI Badge]
 
-# SSOAUTH2UI
+# SSOAuth2UI
 
 A standardized authentication server using SSO UI.
