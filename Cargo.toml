@@ -1,0 +1,17 @@
+[package]
+name = "ssoauth2ui"
+description = "A standardized authentication server utilizing SSO UI"
+version = "0.1.0"
+edition = "2021"
+keywords = ["sso", "universitasindonesia", "oauth", "authentication"]
+authors = ["Nayyara Airlangga <nayyara.airlangga@gmail.com>"]
+homepage = "https://github.com/nayyara-airlangga/ssoauth2ui"
+repository = "https://github.com/nayyara-airlangga/ssoauth2ui"
+documentation = "https://docs.rs/ssoauth2ui"
+readme = "README.md"
+license = "MIT"
+include = ["src/**/*", "LICENSE", "README.md", "CHANGELOG.md"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
