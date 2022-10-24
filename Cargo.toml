@@ -10,8 +10,28 @@ repository = "https://github.com/nayyara-airlangga/ssoauth2ui"
 documentation = "https://docs.rs/ssoauth2ui"
 readme = "README.md"
 license = "MIT"
-include = ["src/**/*", "LICENSE", "README.md", "CHANGELOG.md"]
+include = ["src/**/*", "LICENSE", "README.md"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[lib]
+name = "modules"
+path = "src/lib.rs"
+
+[[bin]]
+name = "ssoauth2ui"
+path = "src/main.rs"
+
 [dependencies]
+axum = "0.5.17"
+chrono = { version = "0.4.22", features = ["serde"] }
+dotenv = "0.15.0"
+env_logger = "0.9.1"
+hyper = { version = "0.14.20", features = ["full"] }
+serde = { version = "1.0.147", features = ["derive"] }
+serde_json = "1.0.87"
+sso-ui-jwt = "0.4.0"
+tokio = { version = "1.21.2", features = ["full"] }
+tower = "0.4.13"
+utoipa = { version = "2.2.0", features = ["axum_extras"] }
+utoipa-swagger-ui = { version = "2.0.1", features = ["axum"] }
