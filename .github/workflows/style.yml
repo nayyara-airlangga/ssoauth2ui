@@ -1,0 +1,43 @@
+name: Code Style
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  lint:
+    name: Linting with Clippy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+    
+      - name: Setup toolchain and clippy
+        run: |
+          rustup install stable
+          rustup component add clippy
+        
+      - name: Run linting
+        run: cargo clippy --workspace --tests -- -D warnings
+      
+  format:
+    name: Check formatting with Rustfmt
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+        
+      - name: Setup toolchain and rustfmt
+        run: |
+          rustup install stable
+          rustup component add rustfmt
+          
+      - name: Run formatting check
+        run: cargo fmt --check --all
