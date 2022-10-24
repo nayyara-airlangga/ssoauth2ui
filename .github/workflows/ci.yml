@@ -1,0 +1,100 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  setup:
+    name: CI Setup
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+        
+      - name: Read and setup cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            **/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      
+      - name: Setup clippy and rustfmt
+        run: |
+          rustup install stable
+          rustup component add clippy
+          rustup component add rustfmt
+      
+      - name: Build project
+        run: cargo build --verbose --workspace --all-features
+    
+  lint:
+    needs: setup
+    name: Linting with Clippy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+        
+      - name: Read from cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            **/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        
+      - name: Run linting
+        run: cargo clippy --workspace --tests -- -D warnings
+      
+  format:
+    needs: setup
+    name: Check formatting with Rustfmt
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+        
+      - name: Read from cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            **/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          
+      - name: Run formatting check
+        run: cargo fmt --check --all
+        
+  test:
+    needs: setup
+    name: Run tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+        
+      - name: Read from cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            **/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          
+      - name: Run tests
+        run: cargo test --workspace --tests --all-features
